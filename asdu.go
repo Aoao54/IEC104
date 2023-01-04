@@ -114,7 +114,7 @@ func (asdu *ASDU) ParseASDU(asduBytes []byte) (signals []*Signal, err error) {
 			s.Address = binary.LittleEndian.Uint32([]byte{asduBytes[6+i*size], asduBytes[6+i*size+1], asduBytes[6+i*size+2], 0x00})
 			s.Value = float64(asduBytes[6+i*size+3])
 			s.Ts = asdu.ParseTime(asduBytes[6+i*size+4 : 6+i*size+11])
-		case CIcNa1, CCiNa1, MEiNA1:
+		case CIcNa1, CCiNa1, MEiNA1,21:
 		default:
 			log.Fatalln("暂不支持的数据类型:", asdu.TypeID)
 		}
@@ -149,4 +149,5 @@ func (asdu *ASDU) ParseTime(asduBytes []byte) float64 {
 	month := int(asduBytes[5])
 	year := int(asduBytes[6]) + 2000
 	return float64(time.Date(year, time.Month(month), day, hour, minute, second, nanosecond, time.Local).Unix()) + float64(nanosecond)/1000000000.0
+
 }
